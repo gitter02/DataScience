@@ -4,7 +4,7 @@ Data Science Assignment
 ## The What 
 Analysis of how Bitcoin Fear & Greed sentiment relates to trader behavior and performance on Hyperliquid.
 
-Datasets
+Dataset
 - **211,224 real trades** across **32 accounts** (May 2023 – May 2025)
 - **104,402 closing trades** with realized PnL analysed
 - **731 days** of real Fear/Greed index data (full overlap with trade history)
@@ -45,7 +45,7 @@ primetrade_assignment/
 ├── data/
 │   ├── sentiment.csv         # Real Fear & Greed index (2,644 days, 2018–2025)
 │   └── trades.csv            # Hyperliquid trade history (211,224 rows, 32 accounts)
-├── charts/                   # 8 output charts (PNG)
+├── charts/                
 │   ├── 01_pnl_by_sentiment.png
 │   ├── 02_winrate_avgpnl.png
 │   ├── 03_size_frequency.png
@@ -55,10 +55,10 @@ primetrade_assignment/
 │   ├── 07_trader_segments.png
 │   └── 08_heatmap_direction_sentiment.png
 ├── output/
-│   ├── key_metrics.csv       # Per-sentiment performance table
-│   └── daily_summary.csv     # Daily aggregates
-├── analysis.py               # Full analysis script — run this first
-├── notebook.ipynb            # Annotated Jupyter notebook
+│   ├── key_metrics.csv      
+│   └── daily_summary.csv     
+├── analysis.py              # to be ran first
+├── notebook.ipynb            
 ├── requirements.txt
 └── README.md
 ```
@@ -88,45 +88,44 @@ primetrade_assignment/
 ---
 
 ## Methodology
-1.Data 
-Given datasets were loaded and manually checked for missing values, duplicate rows, and column consistency. (Basic EDA)
+1. Data 
+    Given datasets were loaded and manually checked for missing values, duplicate rows, and column consistency. (Basic EDA)
 
-2.cleaning
-The trader dataset used the `Timestamp IST` column, which was converted to datetime format and normalized to daily date level for merging with the Fear & Greed dataset.
+2. Cleaning
+    The trader dataset used the `Timestamp IST` column, which was converted to datetime format and normalized to daily date level for merging with the Fear & Greed dataset.
 
-The sentiment dataset mainly used:
-- `date`
-- `value` (Fear & Greed score from 0–100)
-- `classification`
+    The sentiment dataset mainly used:
+    - `date`
+    - `value` (Fear & Greed score from 0–100)
+    - `classification`
 
-Since sentiment data is available daily, both datasets were merged using the date column.
+    Since sentiment data is available daily, both datasets were merged using the date column.
+    For performance analysis, only rows with `Closed PnL != 0` were considered, as these represent completed trades with realized profit or loss.
 
-For performance analysis, only rows with `Closed PnL != 0` were considered, as these represent completed trades with realized profit or loss.
+3. Analysis
+    metrics created for analysis:
+    - average PnL
+    - total PnL
+    - win rate
+    - average position size
+    - number of trades per day
+    - long vs short ratio
 
-3.analysis
-metrics created for analysis:
-- average PnL
-- total PnL
-- win rate
-- average position size
-- number of trades per day
-- long vs short ratio
+    Trader segmentation was done by splitting accounts into groups such as:
+    - frequent vs infrequent traders
+    - large position vs small position traders
+    - higher-performing vs lower-performing traders
 
-Trader segmentation was done by splitting accounts into groups such as:
-- frequent vs infrequent traders
-- large position vs small position traders
-- higher-performing vs lower-performing traders
+    Charts and Mann-Whitney U tests were used to compare Fear vs Greed performance and check whether observed differences were statistically meaningful.
 
-Charts and Mann-Whitney U tests were used to compare Fear vs Greed performance and check whether observed differences were statistically meaningful.
-
-4.final summary file
+4. Final summary file
 
 ![alt text](image.png)
-First, during Fear days, increasing long exposure with controlled leverage may be beneficial, especially for experienced traders. Since win rate is highest during Fear and traders tend to buy during panic, Fear can be treated as an opportunity rather than a warning signal.
+    First, during Fear days, increasing long exposure with controlled leverage may be beneficial, especially for experienced traders. Since win rate is highest during Fear and traders tend to buy during panic, Fear can be treated as an opportunity rather than a warning signal.
 ![alt text](image-1.png)
-Second, during Greed days, reducing position size and avoiding aggressive longs may improve consistency. Since traders become more short-biased during Greed and profits do not increase significantly, smaller and more precise trades appear to be the better strategy.
+    Second, during Greed days, reducing position size and avoiding aggressive longs may improve consistency. Since traders become more short-biased during Greed and profits do not increase significantly, smaller and more precise trades appear to be the better strategy.
 
-Finally a simple predictive model can be built using sentiment, trade size, and trade frequency to predict next-day profitability buckets. A lightweight Streamlit dashboard is added to make exploration of trader segments and sentiment-based behavior more interactive.
+    Finally a simple predictive model can be built using sentiment, trade size, and trade frequency to predict next-day profitability buckets. A lightweight Streamlit dashboard is added to make exploration of trader segments and sentiment-based behavior more interactive.
 
 link to streamlit
 https://simplebonus.streamlit.app/
