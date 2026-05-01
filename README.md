@@ -129,3 +129,4 @@ Second, during Greed days, reducing position size and avoiding aggressive longs 
 Finally a simple predictive model can be built using sentiment, trade size, and trade frequency to predict next-day profitability buckets. A lightweight Streamlit dashboard is added to make exploration of trader segments and sentiment-based behavior more interactive.
 
 link to streamlit
+https://simplebonus.streamlit.app/

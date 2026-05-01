@@ -4,7 +4,7 @@ import pandas as pd
 st.set_page_config(page_title="Trader Performance Dashboard", layout="wide")
 
 st.title("Trader Performance vs Market Sentiment")
-st.subheader("Hyperliquid × Bitcoin Fear & Greed Analysis")
+st.subheader("Hyperliquid × Fear & Greed Analysis")
 
 # Load files
 summary = pd.read_csv("output/key_metrics.csv")
