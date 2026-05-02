@@ -120,7 +120,7 @@ primetrade_assignment/
 
 4. Final summary file
 
-![alt text](screenshot.png)
+![alt text](image.png)
 First, during Fear days, increasing long exposure with controlled leverage may be beneficial, especially for experienced traders. Since win rate is highest during Fear and traders tend to buy during panic, Fear can be treated as an opportunity rather than a warning signal.
 top trades from daily summary
 Second, during Greed days, reducing position size and avoiding aggressive longs may improve consistency. Since traders become more short-biased during Greed and profits do not increase significantly, smaller and more precise trades appear to be the better strategy.
