@@ -119,10 +119,11 @@ primetrade_assignment/
     Charts and Mann-Whitney U tests were used to compare Fear vs Greed performance and check whether observed differences were statistically meaningful.
 
 4. Final summary file
+![alt text](image-1.png)
 
-![alt text](image.png)
 First, during Fear days, increasing long exposure with controlled leverage may be beneficial, especially for experienced traders. Since win rate is highest during Fear and traders tend to buy during panic, Fear can be treated as an opportunity rather than a warning signal.
 top trades from daily summary
+![alt text](image.png)
 Second, during Greed days, reducing position size and avoiding aggressive longs may improve consistency. Since traders become more short-biased during Greed and profits do not increase significantly, smaller and more precise trades appear to be the better strategy.
 ![alt text](charts/08_heatmap.png)
 Finally a simple predictive model can be built using sentiment, trade size, and trade frequency to predict next-day profitability buckets. A lightweight Streamlit dashboard is added to make exploration of trader segments and sentiment-based behavior more interactive.
