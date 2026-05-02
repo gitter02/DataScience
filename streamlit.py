@@ -1,54 +1,72 @@
 import streamlit as st
 import pandas as pd
 
-st.set_page_config(page_title="Trader Performance Dashboard", layout="wide")
+st.set_page_config(page_title="Trader Sentiment Dashboard", layout="wide")
 
+# ----------------------------
+# LOAD DATA
+# ----------------------------
+key_metrics = pd.read_csv("output/key_metrics.csv", index_col=0)
+daily_summary = pd.read_csv("output/daily_summary.csv")
+
+daily_summary["date"] = pd.to_datetime(daily_summary["date"])
+
+# ----------------------------
+# YEARLY AGGREGATION 
+# ----------------------------
+yearly_summary = (
+    daily_summary
+    .set_index("date")
+    .resample("YE")
+    .sum()
+)
+
+yearly_summary.index = yearly_summary.index.year
+
+# ----------------------------
+# TITLE
+# ----------------------------
 st.title("Trader Performance vs Market Sentiment")
-st.subheader("Hyperliquid × Fear & Greed Analysis")
 
-# Load files
-summary = pd.read_csv("output/key_metrics.csv")
-daily = pd.read_csv("output/daily_summary.csv")
+st.markdown(
+    "Analysis of trading performance across Fear, Neutral, and Greed market conditions."
+)
 
-# KPIs
-st.header("Overview")
+# ----------------------------
+# KEY METRICS
+# ----------------------------
+st.subheader("Key Metrics by Sentiment")
+st.dataframe(key_metrics, use_container_width=True)
 
-col1, col2, col3 = st.columns(3)
+# ----------------------------
+# YEARLY PERFORMANCE (CLEAN X-AXIS)
+# ----------------------------
+st.subheader("Yearly Performance Trends")
 
-col1.metric("Total Closing Trades", "104,402")
-col2.metric("Accounts Analyzed", "32")
-col3.metric("Date Range", "2023–2025")
+col1, col2 = st.columns(2)
 
-st.divider()
+with col1:
+    st.markdown("Total PnL by Year")
+    st.line_chart(yearly_summary["total_pnl"])
 
-# Key metrics table
-st.header("Performance by Sentiment")
+with col2:
+    st.markdown("Trade Volume by Year")
+    st.line_chart(yearly_summary["trades"])
 
-st.dataframe(summary, use_container_width=True)
+# ----------------------------
+# WIN RATE TREND (YEARLY)
+# ----------------------------
+st.subheader("Win Rate Trend (Yearly)")
+st.line_chart(yearly_summary["win_rate"])
 
-st.divider()
+# ----------------------------
+# SENTIMENT INSIGHTS
+# ----------------------------
+st.subheader("Key Insights")
 
-# Charts
-st.header("Key Visual Insights")
+best_sentiment = key_metrics["total_pnl"].idxmax()
+worst_sentiment = key_metrics["total_pnl"].idxmin()
 
-st.image("charts/02_winrate_avgpnl.png", caption="Win Rate and Avg PnL")
-st.image("charts/04_long_short_bias.png", caption="Long vs Short Bias")
-st.image("charts/03_size_frequency.png", caption="Position Size and Trade Frequency")
-st.image("charts/07_trader_segments.png", caption="Trader Segments")
-
-st.divider()
-
-# Strategy Recommendations
-st.header("Strategy Recommendations")
-
-st.markdown("""
-### Rule 1 — Buy during Fear, avoid chasing Greed
-
-Fear days showed the highest win rate and larger long positions.
-This suggests panic creates stronger opportunities than greed.
-
-### Rule 2 — Use larger size only during high-volatility Fear regimes
-
-During Fear, average position size was much higher.
-During Greed, smaller and more precise trades worked better.
-""")
+st.write(f"- Best performing sentiment: {best_sentiment}")
+st.write(f"- Worst performing sentiment: {worst_sentiment}")
+st.write(f"- Average win rate: {key_metrics['win_rate'].mean():.2f}")
